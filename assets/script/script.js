@@ -6,6 +6,7 @@ var currentTemp = document.querySelector("#current-temp");
 var currentWind = document.querySelector("#current-wind");
 var currentHumidity = document.querySelector("#current-humidity");
 var fiveDay = document.querySelector("#five-day");
+var fiveDayDay = document.querySelector("#five-day-day")
 var fiveTemp = document.querySelector("#five-temp");
 var fiveHumidity = document.querySelector("#five-humidity");
 var fiveWind = document.querySelector("#five-wind");
@@ -133,28 +134,31 @@ var getWeather = function (latitude, longitude) {
     })
 
 };
-var getFiveDay = function (latitude, longitude){
-var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
-                    console.log(fiveDayURL);
-                    console.log(latitude, longitude);
+var getFiveDay = function (latitude, longitude) {
+    var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+    // console.log(fiveDayURL);
+    // console.log(latitude, longitude);
+
+    fetch(fiveDayURL).then(function (response) {
+        response.json().then(function (fiveDayData) {
+            console.log(fiveDayData);
+            for (let i = 0; i < 5; i++) {
+                var foreDay = dayjs().add([i], "day").format("M/D/YYYY");
+                // for (let iconIndex = 0; iconIndex < 5; iconIndex++) {
+                //     var foreIcon = fiveDayData.list[i].weather[iconIndex].icon; 
+                // };    
+                // var foreIcon = fiveDayData.list[i].weather[i].icon;            
+                var foreTemp = fiveDayData.list[i].main.temp;
+                var foreWind = fiveDayData.list[i].wind.speed;
+                var foreHumidity = fiveDayData.list[i].main.humidity;
+                console.log((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F", foreWind, foreHumidity, foreDay);
+
+                // fiveDayDay.textContent = foreDay;
+            }
+        })
+    });
 }
-//                     fetch(fiveDayURL).then(function (response) {
-//                         response.json().then(function (fiveDayData) {
-//                         console.log(fiveDayData);
-//                     for (let i = 0; i < 5; i++) {
-//                         // var foreDay = fiveDayData[i].;
-//                         // var foreIcon = ;
-//                         var foreTemp = fiveDayData[i].list.main.temp;
-//                         // var foreWind= ;
-//                         // var foreHumidy = ;
 
-//                         Console.log(foreDay, foreIcon, foreTemp, foreWind, foreHumidy);
-
-//                     }    
-//                     })
-//                     })
-
-//                 }
 
 
 
