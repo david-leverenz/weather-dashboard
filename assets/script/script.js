@@ -154,6 +154,11 @@ var getFiveDay = function (latitude, longitude) {
                 console.log((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F", foreWind, foreHumidity, foreDay);
 
                 // fiveDayDay.textContent = foreDay;
+
+                fiveDay.setAttribute("class", "col-12 col-xl");
+
+                fiveDay.append(foreDay);
+
             }
         })
     });
