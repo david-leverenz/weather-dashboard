@@ -1,5 +1,6 @@
 var submitEl = document.querySelector("#submit-form");
 var cityInput = document.querySelector("#search-input");
+var cityTitle = document.querySelector("#city");
 var currentWeather = document.querySelector("#current-weather");
 var currentTemp = document.querySelector("#current-temp");
 var currentWind = document.querySelector("#current-wind");
@@ -27,6 +28,8 @@ var cityLink = document.querySelector("#city-link");
 
 // loop "dt_txt", "main.temp", "wind.speed"; "main.humidity"
 
+var dayDate = dayjs().format("M/D/YYYY");
+// console.log(dayDate);
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -62,8 +65,12 @@ var getWeather = function (city) {
                 for (var i = 0; i < data.length; i++) {
                     var latitude = data[i].lat;
                     var longitude = data[i].lon;
+                    var cityName = data[i].name;
+                    
+                    console.log(data[i].name);
                     // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
                     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+                    
                     // console.log(weatherURL);
                             
                     fetch(weatherURL).then(function (response) {
@@ -73,14 +80,16 @@ var getWeather = function (city) {
                             response.json().then(function (weather) {
                                 console.log(weather);
                                 console.log(weather.main.temp);
+
                                 var temperature = weather.main.temp;
                                 var windSpeed = weather.wind.speed;
                                 var humidity = weather.main.humidity;
-                                console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
+                                // console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
 
-                                currentTemp.innerHTML = "TEMP: " + (((temperature-273.15)*1.8)+32).toFixed(2) + "F";
-
-
+                                cityTitle.textContent = cityName + " " + dayDate
+                                currentTemp.textContent = "TEMP: " + (((temperature-273.15)*1.8)+32).toFixed(2) + " F";
+                                currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
+                                currentHumidity.textContent = "HUMIDITY: " + (((temperature-273.15)*1.8)+32).toFixed(2) + " %";
                             })
                         }
                     })
