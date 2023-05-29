@@ -10,6 +10,7 @@ var fiveTemp = document.querySelector("#five-temp");
 var fiveHumidity = document.querySelector("#five-humidity");
 var fiveWind = document.querySelector("#five-wind");
 var cityLink = document.querySelector("#city-link");
+var weatherPicture = document.querySelector("#weather-icon")
 
 // sample api call
 //http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=44be570f60fd1ef1f012456a39e5a0ff
@@ -56,40 +57,55 @@ var formSubmitHandler = function (event) {
 var getWeather = function (city) {
     // city.preventDefault();
 
+
     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=44be570f60fd1ef1f012456a39e5a0ff";
 
     fetch(apiURL).then(function (response) {
-   
+
+
         if (response.ok) {
             response.json().then(function (data) {
                 for (var i = 0; i < data.length; i++) {
                     var latitude = data[i].lat;
                     var longitude = data[i].lon;
                     var cityName = data[i].name;
-                    
-                    console.log(data[i].name);
+
+                    // console.log(data[i].name);
                     // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
                     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
-                    
+
                     // console.log(weatherURL);
-                            
+
                     fetch(weatherURL).then(function (response) {
                         // response.preventDefault();
                         // console.log(weatherURL);
                         if (response.ok) {
                             response.json().then(function (weather) {
-                                console.log(weather);
-                                console.log(weather.main.temp);
+                                // console.log(weather);
+                                // console.log(weather.main.temp);
 
                                 var temperature = weather.main.temp;
                                 var windSpeed = weather.wind.speed;
                                 var humidity = weather.main.humidity;
+                                var iconCode = weather.weather[0].icon;
+                                // console.log(iconCode);
                                 // console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
 
+
+                                weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
+                                console.log(weatherPicture);
+
+                                var pic = document.createElement("img");
+                                pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
+                                pic.setAttribute("height", "100");
+                                pic.setAttribute("width", "100");
+                                document.getElementById("weather-icon").innerHTML = "";
+                                document.getElementById("weather-icon").appendChild(pic);
+
                                 cityTitle.textContent = cityName + " " + dayDate
-                                currentTemp.textContent = "TEMP: " + (((temperature-273.15)*1.8)+32).toFixed(2) + " F";
+                                currentTemp.textContent = "TEMP: " + (((temperature - 273.15) * 1.8) + 32).toFixed(2) + " F";
                                 currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
-                                currentHumidity.textContent = "HUMIDITY: " + (((temperature-273.15)*1.8)+32).toFixed(2) + " %";
+                                currentHumidity.textContent = "HUMIDITY: " + humidity + " %";
                             })
                         }
                     })
