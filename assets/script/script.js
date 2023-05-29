@@ -62,16 +62,41 @@ var getLatLon = function (city) {
                     var latitude = data[i].lat;
                     var longitude = data[i].lon;
                     console.log("Latitude: " + latitude + ", Longitude: " + longitude);
+                    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+                    console.log(weatherURL);
+
+                    fetch(weatherURL).then(function (response){
+                        console.log(weatherURL);
+                        if (response.ok) {
+                            response.json().then(function (data) {
+                                console.log(data);
+                                for (var i = 0; i < data.length; i++) {
+                                    console.log(data);
+                                    console.log(data[i].main.temp);
+                                    var temperature = data[i].main.temp;
+                                    var windSpeed = data[i].wind.speed;
+                                    var humidity = data[i].main.humidity;
+                                    console.log(temperature, windSpeed, humidity);
+                                    }
+
+                            })
+                        }
+                    })
                 }
-
-
 
             });
         } else {
             alert("Error: " + response.statusText);
         }
+        // var getWeather = function (latitude, longitude) {
+        //     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff"
+        //     console.log(weatherURL);
+        // }
+
     });
 };
+
+
 
 // var LatLon = function (latitude, longitude) {
 //     if (latitude.length === 0) {
