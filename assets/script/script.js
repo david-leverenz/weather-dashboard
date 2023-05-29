@@ -9,8 +9,9 @@ var fiveDay = document.querySelector("#five-day");
 var fiveTemp = document.querySelector("#five-temp");
 var fiveHumidity = document.querySelector("#five-humidity");
 var fiveWind = document.querySelector("#five-wind");
-var cityLink = document.querySelector("#city-link");
-var weatherPicture = document.querySelector("#weather-icon")
+// var cityLink = document.querySelector("#city-link");
+var weatherPicture = document.querySelector("#weather-icon");
+var cityList = document.querySelectorAll("#cities");
 
 // sample api call
 //http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=44be570f60fd1ef1f012456a39e5a0ff
@@ -40,9 +41,14 @@ var formSubmitHandler = function (event) {
     if (cityName) {
         getWeather(cityName);
 
-        // currentWeather.textContent = "";
-        // fiveDay.textContent = "";
-        // cityInput = "";
+        // var cityLink = document.createElement("btn");
+        var pastCity = localStorage.getItem("citySearch");
+        // console.log(cityLink);
+        // cityLink.setAttribute("class", "btn-secondary");
+        document.getElementById("cities").append(pastCity);
+        console.log(pastCity);
+
+        
     } else {
         alert("Please enter a city name.");
     }
@@ -69,6 +75,8 @@ var getWeather = function (city) {
                     var latitude = data[i].lat;
                     var longitude = data[i].lon;
                     var cityName = data[i].name;
+
+                    localStorage.setItem("citySearch",cityName)
 
                     // console.log(data[i].name);
                     // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
@@ -106,7 +114,8 @@ var getWeather = function (city) {
                                 currentTemp.textContent = "TEMP: " + (((temperature - 273.15) * 1.8) + 32).toFixed(2) + " F";
                                 currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
                                 currentHumidity.textContent = "HUMIDITY: " + humidity + " %";
-                            })
+
+                                })
                         }
                     })
                 }
@@ -115,27 +124,9 @@ var getWeather = function (city) {
         } else {
             alert("Error: " + response.statusText);
         }
-        // var getWeather = function (latitude, longitude) {
-        //     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff"
-        //     console.log(weatherURL);
-        // }
 
     });
 };
-
-
-
-// var LatLon = function (latitude, longitude) {
-//     if (latitude.length === 0) {
-//         alert("No latitude found.");
-//     } else if (longitude.length === 0) {
-//         alert("No longitude found.");
-//     }
-//     return;
-// }
-
-
-// save the input to local storage and then display it in the searched cities section
 
 submitEl.addEventListener("submit", formSubmitHandler);
 // cityLink.addEventListener("click", buttonClickHandler);
