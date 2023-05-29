@@ -34,11 +34,11 @@ var formSubmitHandler = function (event) {
     var cityName = cityInput.value.trim();
 
     if (cityName) {
-        getLatLon(cityName);
+        getWeather(cityName);
 
-        currentWeather.textContent = "";
-        fiveDay.textContent = "";
-        cityInput = "";
+        // currentWeather.textContent = "";
+        // fiveDay.textContent = "";
+        // cityInput = "";
     } else {
         alert("Please enter a city name.");
     }
@@ -48,14 +48,15 @@ var formSubmitHandler = function (event) {
 //     // will be links to the searched cities
 // }
 
-// getWeather();
-
 // var cityName = "London";
 
-var getLatLon = function (city) {
+var getWeather = function (city) {
+    // city.preventDefault();
+
     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=44be570f60fd1ef1f012456a39e5a0ff";
 
     fetch(apiURL).then(function (response) {
+   
         if (response.ok) {
             response.json().then(function (data) {
                 for (var i = 0; i < data.length; i++) {
@@ -64,25 +65,21 @@ var getLatLon = function (city) {
                     // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
                     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
                     // console.log(weatherURL);
-
-                    fetch(weatherURL).then(function (response){
+                            
+                    fetch(weatherURL).then(function (response) {
+                        // response.preventDefault();
                         // console.log(weatherURL);
                         if (response.ok) {
                             response.json().then(function (weather) {
                                 console.log(weather);
                                 console.log(weather.main.temp);
-                                    var temperature = weather.main.temp;
-                                    var windSpeed = weather.wind.speed;
-                                    var humidity = weather.main.humidity;
-                                    console.log("Temp: " + temperature +", Wind Speed: " + windSpeed+ ", Humidity: "+ humidity);
-                                // for (var i = 0; i < data.length; i++) {
-                                //     // console.log(data);
-                                //     // console.log(data[i].main.temp);
-                                //     // var temperature = data[i].main.temp;
-                                //     // var windSpeed = data[i].wind.speed;
-                                //     // var humidity = data[i].main.humidity;
-                                //     // console.log(temperature, windSpeed, humidity);
-                                //     }
+                                var temperature = weather.main.temp;
+                                var windSpeed = weather.wind.speed;
+                                var humidity = weather.main.humidity;
+                                console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
+
+                                currentTemp.innerHTML = "TEMP: " + (((temperature-273.15)*1.8)+32).toFixed(2) + "F";
+
 
                             })
                         }
