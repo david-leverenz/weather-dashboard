@@ -26,12 +26,16 @@ var cityList = document.querySelectorAll("#cities");
 // "main.temp"; "wind.speed"; "main.humidity"
 
 // five day call
-//api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=appid=44be570f60fd1ef1f012456a39e5a0ff
+
 
 // loop "dt_txt", "main.temp", "wind.speed"; "main.humidity"
 
 var dayDate = dayjs().format("M/D/YYYY");
 // console.log(dayDate);
+
+var latitude = "string";
+var longitude = "string";
+var cityName = "string";
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -39,16 +43,17 @@ var formSubmitHandler = function (event) {
     var cityName = cityInput.value.trim();
 
     if (cityName) {
-        getWeather(cityName);
+        // getWeather(cityName);
+        getLatLonCity(cityName);
 
         // var cityLink = document.createElement("btn");
         var pastCity = localStorage.getItem("citySearch");
         // console.log(cityLink);
         // cityLink.setAttribute("class", "btn-secondary");
         document.getElementById("cities").append(pastCity);
-        console.log(pastCity);
+        // console.log(pastCity);
 
-        
+
     } else {
         alert("Please enter a city name.");
     }
@@ -58,75 +63,176 @@ var formSubmitHandler = function (event) {
 //     // will be links to the searched cities
 // }
 
-// var cityName = "London";
+var latitude = "";
+var longitude = "";
+var cityName = "";
 
-var getWeather = function (city) {
-    // city.preventDefault();
-
+var getLatLonCity = function (city) {
 
     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=44be570f60fd1ef1f012456a39e5a0ff";
 
     fetch(apiURL).then(function (response) {
 
-
         if (response.ok) {
             response.json().then(function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    var latitude = data[i].lat;
-                    var longitude = data[i].lon;
-                    var cityName = data[i].name;
+                    latitude = data[i].lat;
+                    longitude = data[i].lon;
+                    cityName = data[i].name;
 
-                    localStorage.setItem("citySearch",cityName)
+                    localStorage.setItem("citySearch", cityName)
 
                     // console.log(data[i].name);
-                    // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
-                    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
-
-                    // console.log(weatherURL);
-
-                    fetch(weatherURL).then(function (response) {
-                        // response.preventDefault();
-                        // console.log(weatherURL);
-                        if (response.ok) {
-                            response.json().then(function (weather) {
-                                // console.log(weather);
-                                // console.log(weather.main.temp);
-
-                                var temperature = weather.main.temp;
-                                var windSpeed = weather.wind.speed;
-                                var humidity = weather.main.humidity;
-                                var iconCode = weather.weather[0].icon;
-                                // console.log(iconCode);
-                                // console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
-
-
-                                weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
-                                console.log(weatherPicture);
-
-                                var pic = document.createElement("img");
-                                pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
-                                pic.setAttribute("height", "100");
-                                pic.setAttribute("width", "100");
-                                document.getElementById("weather-icon").innerHTML = "";
-                                document.getElementById("weather-icon").appendChild(pic);
-
-                                cityTitle.textContent = cityName + " " + dayDate
-                                currentTemp.textContent = "TEMP: " + (((temperature - 273.15) * 1.8) + 32).toFixed(2) + " F";
-                                currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
-                                currentHumidity.textContent = "HUMIDITY: " + humidity + " %";
-
-                                })
-                        }
-                    })
+                    console.log("City: " + cityName + ", " + "Latitude: " + latitude + ", Longitude: " + longitude);
+                    getWeather(latitude, longitude);
                 }
-
-            });
-        } else {
-            alert("Error: " + response.statusText);
+            })
         }
+    })
 
-    });
+    var getWeather = function (latitude, longitude) {
+        var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+
+        console.log(weatherURL);
+        console.log(latitude, longitude);
+
+        fetch(weatherURL).then(function (response) {
+            // response.preventDefault();
+            // console.log(weatherURL);
+            if (response.ok) {
+                response.json().then(function (weather) {
+                    // console.log(weather);
+                    // console.log(weather.main.temp);
+
+                    var temperature = weather.main.temp;
+                    var windSpeed = weather.wind.speed;
+                    var humidity = weather.main.humidity;
+                    var iconCode = weather.weather[0].icon;
+                    // console.log(iconCode);
+                    // console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
+
+
+                    weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
+                    // console.log(weatherPicture);
+
+                    var pic = document.createElement("img");
+                    pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
+                    pic.setAttribute("height", "100");
+                    pic.setAttribute("width", "100");
+                    document.getElementById("weather-icon").innerHTML = "";
+                    document.getElementById("weather-icon").appendChild(pic);
+
+                    cityTitle.textContent = cityName + " " + dayDate
+                    currentTemp.textContent = "TEMP: " + (((temperature - 273.15) * 1.8) + 32).toFixed(2) + " F";
+                    currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
+                    currentHumidity.textContent = "HUMIDITY: " + humidity + " %";
+
+                })
+            }
+        })
+
+    }
 };
+// console.log(latitude);
+// var GetWeather = function(latitude, longitude) {
+//     //   var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+
+//     // console.log(weatherURL);
+// console.log(latitude, longitude);
+
+// }
+
+// var getWeather = function (city) {
+//     // city.preventDefault();
+
+
+//     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=44be570f60fd1ef1f012456a39e5a0ff";
+
+//     fetch(apiURL).then(function (response) {
+
+
+//         if (response.ok) {
+//             response.json().then(function (data) {
+//                 for (var i = 0; i < data.length; i++) {
+//                     var latitude = data[i].lat;
+//                     var longitude = data[i].lon;
+//                     var cityName = data[i].name;
+
+//                     localStorage.setItem("citySearch", cityName)
+
+//                     // console.log(data[i].name);
+//                     // console.log("Latitude: " + latitude + ", Longitude: " + longitude);
+//                     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+
+//                     // console.log(weatherURL);
+
+//                     fetch(weatherURL).then(function (response) {
+//                         // response.preventDefault();
+//                         // console.log(weatherURL);
+//                         if (response.ok) {
+//                             response.json().then(function (weather) {
+//                                 // console.log(weather);
+//                                 // console.log(weather.main.temp);
+
+//                                 var temperature = weather.main.temp;
+//                                 var windSpeed = weather.wind.speed;
+//                                 var humidity = weather.main.humidity;
+//                                 var iconCode = weather.weather[0].icon;
+//                                 // console.log(iconCode);
+//                                 // console.log("Temp: " + temperature + ", Wind Speed: " + windSpeed + ", Humidity: " + humidity);
+
+
+//                                 weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
+//                                 // console.log(weatherPicture);
+
+//                                 var pic = document.createElement("img");
+//                                 pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
+//                                 pic.setAttribute("height", "100");
+//                                 pic.setAttribute("width", "100");
+//                                 document.getElementById("weather-icon").innerHTML = "";
+//                                 document.getElementById("weather-icon").appendChild(pic);
+
+//                                 cityTitle.textContent = cityName + " " + dayDate
+//                                 currentTemp.textContent = "TEMP: " + (((temperature - 273.15) * 1.8) + 32).toFixed(2) + " F";
+//                                 currentWind.textContent = "WIND: " + windSpeed.toFixed(2) + " MPH";
+//                                 currentHumidity.textContent = "HUMIDITY: " + humidity + " %";
+
+//                             })
+//                         }
+//                     })
+//                     var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
+//                     console.log(fiveDayURL);
+
+//                     fetch(fiveDayURL).then(function (response) {
+//                         response.json().then(function (fiveDayData) {
+//                         console.log(fiveDayData);
+//                     for (let i = 0; i < 5; i++) {
+//                         // var foreDay = fiveDayData[i].;
+//                         // var foreIcon = ;
+//                         var foreTemp = fiveDayData[i].list.main.temp;
+//                         // var foreWind= ;
+//                         // var foreHumidy = ;
+
+//                         Console.log(foreDay, foreIcon, foreTemp, foreWind, foreHumidy);
+
+//                     }    
+//                     })
+//                     })
+
+//                 }
+
+
+
+
+
+//             });
+
+//         } else {
+//             alert("Error: " + response.statusText);
+//         }
+
+//     });
+// };
 
 submitEl.addEventListener("submit", formSubmitHandler);
 // cityLink.addEventListener("click", buttonClickHandler);
