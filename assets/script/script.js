@@ -1,22 +1,16 @@
 var submitEl = document.querySelector("#submit-form");
 var cityInput = document.querySelector("#search-input");
 var cityTitle = document.querySelector("#city");
-// var currentWeather = document.querySelector("#current-weather");
 var currentTemp = document.querySelector("#current-temp");
 var currentWind = document.querySelector("#current-wind");
 var currentHumidity = document.querySelector("#current-humidity");
 var fiveDay = document.querySelector("#five-day");
-var fiveDayDay = document.querySelector("#five-day-day")
-var fiveTemp = document.querySelector("#five-temp");
-var fiveHumidity = document.querySelector("#five-humidity");
-var fiveWind = document.querySelector("#five-wind");
 var weatherPicture = document.querySelector("#weather-icon");
 var forePicture = document.querySelector("#fore-icon")
 var cityList = document.querySelector("#cities");
 var cardContainer = document.querySelector("#card-container");
 
 var dayDate = dayjs().format("M/D/YYYY");
-
 
 var latitude = "string";
 var longitude = "string";
