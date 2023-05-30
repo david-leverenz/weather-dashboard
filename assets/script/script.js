@@ -13,6 +13,7 @@ var fiveWind = document.querySelector("#five-wind");
 var weatherPicture = document.querySelector("#weather-icon");
 var forePicture = document.querySelector("#fore-icon")
 var cityList = document.querySelector("#cities");
+var cardContainer = document.querySelector("#card-container");
 
 var dayDate = dayjs().format("M/D/YYYY");
 
@@ -95,6 +96,7 @@ var getWeather = function (latitude, longitude) {
 
                 weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
 
+                cardContainer.setAttribute("class","card p-3 my-2")
                 var pic = document.createElement("img");
                 pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
                 pic.setAttribute("height", "100");
