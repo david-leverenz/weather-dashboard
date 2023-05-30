@@ -82,7 +82,7 @@ var getLatLonCity = function (city) {
                         citiesInStorage.push(cityName);
                         localStorage.setItem("citySearch", JSON.stringify(citiesInStorage));
                     }
-                    
+
                     getWeather(latitude, longitude);
                     getFiveDay(latitude, longitude);
                 }
@@ -97,7 +97,7 @@ var getWeather = function (latitude, longitude) {
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
 
     fetch(weatherURL).then(function (response) {
-       
+
         if (response.ok) {
             response.json().then(function (weather) {
 
@@ -108,7 +108,7 @@ var getWeather = function (latitude, longitude) {
 
                 weatherPicture = "https://openweathermap.org/img/w/" + iconCode + ".png";
 
-                cardContainer.setAttribute("class","card p-3 my-2")
+                cardContainer.setAttribute("class", "card p-3 my-2")
                 var pic = document.createElement("img");
                 pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
                 pic.setAttribute("height", "100");
@@ -135,7 +135,7 @@ var getFiveDay = function (latitude, longitude) {
 
     fetch(fiveDayURL).then(function (response) {
         response.json().then(function (fiveDayData) {
-         
+
             rowDivEl.innerHTML = "";
             for (let i = 1; i < 6; i++) {
                 var foreDay = dayjs().add([i], "day").format("M/D/YYYY");
@@ -161,7 +161,7 @@ var getFiveDay = function (latitude, longitude) {
 
 
                 var pic = document.createElement("img");
-                pic.setAttribute("alt", "weather icon"); 
+                pic.setAttribute("alt", "weather icon");
                 pic.src = weatherPicture;
                 pic.setAttribute("height", "100");
                 pic.setAttribute("width", "100");
@@ -173,7 +173,7 @@ var getFiveDay = function (latitude, longitude) {
                 cardEl.appendChild(humidityEl);
                 cardEl.appendChild(windEl);
                 foreList.appendChild(cardEl);
-               rowDivEl.appendChild(foreList);
+                rowDivEl.appendChild(foreList);
             }
         })
     });
