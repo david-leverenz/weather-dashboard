@@ -157,7 +157,8 @@ var getFiveDay = function (latitude, longitude) {
 
                 var foreList = document.createElement("div");
                 foreList.setAttribute("class", "col-12 col-xl");
-                document.getElementById("five-day").textContent = foreDay;
+                document.getElementById("five-day").append(foreDay);
+                document.getElementById("five-day").append((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F");
 
                 // fiveDay.append(foreDay);
 
