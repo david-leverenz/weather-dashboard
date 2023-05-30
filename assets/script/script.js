@@ -50,7 +50,7 @@ var formSubmitHandler = function (event) {
     }
 };
 
-// Create a function to call getLatLonCity.
+// Create a function to call getLatLonCity to get the latitude, longitude and city.
 
 var buttonClickHandler = function (event) {
     getLatLonCity(event.target.textContent);
