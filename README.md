@@ -1,7 +1,13 @@
 # Weather Dashboard
 Users can use this page to search for the current weather and 5-day forecast using a city name.<br>
 ## Description
-An in-depth paragraph about your project and overview of use.
+You can see the weather outlook for multiple cities so that you can plan a trip accordingly.<br>
+When you search for a city you are presented with current and future conditions for that city and that city is added to your search history.<br>
+When you view current weather conditions for that city you are presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed.<br>
+When you view future weather conditions for that city you are presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity.<br>
+When you click on a city in the search history you are presented with current and future conditions for that city.<br>
+The search history is only updated when a new city is searched (it will not keep adding the same city to the history list).<br>
+Behind the scenes the page is calling an open weather api (cited below), getting the latitude and longitude for the city name entered, and then executing another api call to get the weather.<br>
 
 ## Getting Started
 N/A<br>
