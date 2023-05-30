@@ -12,6 +12,7 @@ var fiveHumidity = document.querySelector("#five-humidity");
 var fiveWind = document.querySelector("#five-wind");
 // var cityLink = document.querySelector("#city-link");
 var weatherPicture = document.querySelector("#weather-icon");
+var forePicture = document.querySelector("#fore-icon")
 var cityList = document.querySelectorAll("#cities");
 
 // sample api call
@@ -67,6 +68,7 @@ var formSubmitHandler = function (event) {
 var latitude = "";
 var longitude = "";
 var cityName = "";
+var rowDivEl = document.getElementById("five-day")
 
 var getLatLonCity = function (city) {
 
@@ -142,23 +144,43 @@ var getFiveDay = function (latitude, longitude) {
     fetch(fiveDayURL).then(function (response) {
         response.json().then(function (fiveDayData) {
             console.log(fiveDayData);
-            for (let i = 0; i < 6; i++) {
+            for (let i = 1; i < 7; i++) {
                 var foreDay = dayjs().add([i], "day").format("M/D/YYYY");
                 // for (let iconIndex = 0; iconIndex < 5; iconIndex++) {
                 //     var foreIcon = fiveDayData.list[i].weather[iconIndex].icon; 
                 // };    
-                // var foreIcon = fiveDayData.list[i].weather[i].icon;            
-                var foreTemp = fiveDayData.list[i].main.temp;
+                var foreIcon = fiveDayData.list[i].weather[0].icon;
+                var foreTemp = ((((fiveDayData.list[i].main.temp) - 273.15) * 1.8) + 32).toFixed(2) + " F";
                 var foreWind = fiveDayData.list[i].wind.speed;
                 var foreHumidity = fiveDayData.list[i].main.humidity;
-                console.log((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F", foreWind, foreHumidity, foreDay);
+                console.log(foreTemp, foreWind, foreHumidity, foreDay, foreIcon);
+
+                // (((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F"
 
                 // fiveDayDay.textContent = foreDay;
 
                 var foreList = document.createElement("div");
                 foreList.setAttribute("class", "col-12 col-xl");
-                document.getElementById("five-day").append(foreDay);
-                document.getElementById("five-day").append((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F");
+                var cardEl = document.createElement("div");
+                cardEl.setAttribute("class", "card p-3 my-2");
+                var titleEl = document.createElement("h4");
+                var tempEl = document.createElement("p");
+                var windEl = document.createElement("p");
+                var humidityEl = document.createElement("p");
+                titleEl.textContent = foreDay;
+                tempEl.textContent = "TEMP: " + foreTemp;
+                windEl.textContent = "WIND: " + foreWind + " MPH";
+                humidityEl.textContent = "HUMIDITY: " + foreHumidity +"%";
+
+
+                cardEl.appendChild(titleEl);
+                cardEl.appendChild(tempEl);
+                cardEl.appendChild(windEl);
+                foreList.appendChild(cardEl);
+                rowDivEl.appendChild(foreList);
+
+                // document.getElementById("five-day").append(foreDay);
+                // document.getElementById("five-day").append((((foreTemp - 273.15) * 1.8) + 32).toFixed(2) + " F");
 
                 // fiveDay.append(foreDay);
 
