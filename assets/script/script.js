@@ -12,21 +12,21 @@ var forePicture = document.querySelector("#fore-icon")
 var cityList = document.querySelector("#cities");
 var cardContainer = document.querySelector("#card-container");
 
-// Get the current day and format it the way I want to.
+// Get the current day and format it the way I want.
 
 var dayDate = dayjs().format("M/D/YYYY");
 
-// More variable declaration
+// More variable declarations so that they can be called outside of the function in which they are gathered.
 
 var latitude = "string";
 var longitude = "string";
 var cityName = "string";
 
-// Create an array in local storage.
+// Create an array in local storage if it doesn't exist.
 
 var citiesInStorage = JSON.parse(localStorage.getItem("citySearch")) || []
 
-// Create a function to iterate through the cities in storage and display them on a button on the page.
+// Create a function to get the city name and iterate through the cities in storage and display them on a button on the page.
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -50,7 +50,7 @@ var formSubmitHandler = function (event) {
     }
 };
 
-// Create a function to call getLatLonCity to get the latitude, longitude and city.
+// Create a function on the button to call getLatLonCity to get the latitude, longitude and city.
 
 var buttonClickHandler = function (event) {
     getLatLonCity(event.target.textContent);
@@ -63,7 +63,7 @@ var longitude = "";
 var cityName = "";
 var rowDivEl = document.getElementById("five-day")
 
-// This function inserts the city into the apiURL then fetches the latitude and longitude of the city.  It checks the cities in storage array and if the current searched city is not in the array, it adds it to the array.  If it's already in there it doesn't re-add the city to the array.  Then it runs the getWeather and getFiveDay functions.
+// This function inserts the city into the apiURL then fetches the latitude and longitude of the city.  It checks the cities in the storage array and if the current searched city is not in the array, it adds it to the array.  If it's already in there it doesn't re-add the city to the array.  Then it runs the getWeather and getFiveDay functions.
 
 var getLatLonCity = function (city) {
 
@@ -91,7 +91,7 @@ var getLatLonCity = function (city) {
     })
 };
 
-// This function uses the latitude and longitude from the getLatLonCity function to recall the api and retieve current weather data.  It then places the current weather forecast on the page.  I like that the api had the icons in the data set.  It's a neat feature.
+// This function uses the latitude and longitude from the getLatLonCity function to re-call the api and retieve current weather data.  It then places the current weather forecast on the page.  I like that the api had the icons in the data set.  It's a neat feature.
 
 var getWeather = function (latitude, longitude) {
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=44be570f60fd1ef1f012456a39e5a0ff";
@@ -179,7 +179,7 @@ var getFiveDay = function (latitude, longitude) {
     });
 }
 
-// This adds event listeners on my buttons.
+// This adds event listeners on my buttons so that they do something.
 
 submitEl.addEventListener("submit", formSubmitHandler);
 cityList.addEventListener("click", buttonClickHandler);
