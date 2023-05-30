@@ -13,7 +13,7 @@ var fiveWind = document.querySelector("#five-wind");
 // var cityLink = document.querySelector("#city-link");
 var weatherPicture = document.querySelector("#weather-icon");
 var forePicture = document.querySelector("#fore-icon")
-var cityList = document.querySelectorAll("#cities");
+var cityList = document.querySelector("#cities");
 
 // sample api call
 //http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=44be570f60fd1ef1f012456a39e5a0ff
@@ -38,7 +38,7 @@ var dayDate = dayjs().format("M/D/YYYY");
 var latitude = "string";
 var longitude = "string";
 var cityName = "string";
-
+var citiesInStorage = JSON.parse(localStorage.getItem("citySearch"))||[]
 var formSubmitHandler = function (event) {
     event.preventDefault();
 
@@ -49,10 +49,18 @@ var formSubmitHandler = function (event) {
         getLatLonCity(cityName);
 
         // var cityLink = document.createElement("btn");
-        var pastCity = localStorage.getItem("citySearch");
+        // var pastCity = localStorage.getItem("citySearch");
         // console.log(cityLink);
         // cityLink.setAttribute("class", "btn-secondary");
-        document.getElementById("cities").append(pastCity);
+        for (let i = 0; i < citiesInStorage.length; i++) {
+            var cityButton = document.createElement("button");
+            cityButton.setAttribute("class", "btn btn-primary");
+            cityButton.textContent=citiesInStorage[i];
+            document.getElementById("cities").appendChild(cityButton);
+         
+            
+        }
+        
         // console.log(pastCity);
 
 
@@ -61,14 +69,17 @@ var formSubmitHandler = function (event) {
     }
 };
 
-// var buttonClickHandler = function (event) {
-//     // will be links to the searched cities
-// }
+var buttonClickHandler = function (event) {
+console.log(event.target.textContent);
+getLatLonCity(event.target.textContent);
+
+}
 
 var latitude = "";
 var longitude = "";
 var cityName = "";
 var rowDivEl = document.getElementById("five-day")
+
 
 var getLatLonCity = function (city) {
 
@@ -82,11 +93,12 @@ var getLatLonCity = function (city) {
                     latitude = data[i].lat;
                     longitude = data[i].lon;
                     cityName = data[i].name;
-
-                    localStorage.setItem("citySearch", cityName)
+        citiesInStorage.push(cityName)
+                    localStorage.setItem("citySearch", JSON.stringify(citiesInStorage));
 
                     // console.log(data[i].name);
                     // console.log("City: " + cityName + ", " + "Latitude: " + latitude + ", Longitude: " + longitude);
+                    // console.log(latitude + "," + longitude);
                     getWeather(latitude, longitude);
                     getFiveDay(latitude, longitude);
                 }
@@ -143,8 +155,9 @@ var getFiveDay = function (latitude, longitude) {
 
     fetch(fiveDayURL).then(function (response) {
         response.json().then(function (fiveDayData) {
-            console.log(fiveDayData);
-            for (let i = 1; i < 7; i++) {
+            // console.log(fiveDayData);
+            rowDivEl.innerHTML="";
+            for (let i = 1; i < 6; i++) {
                 var foreDay = dayjs().add([i], "day").format("M/D/YYYY");
                 // for (let iconIndex = 0; iconIndex < 5; iconIndex++) {
                 //     var foreIcon = fiveDayData.list[i].weather[iconIndex].icon; 
@@ -170,10 +183,23 @@ var getFiveDay = function (latitude, longitude) {
                 titleEl.textContent = foreDay;
                 tempEl.textContent = "TEMP: " + foreTemp;
                 windEl.textContent = "WIND: " + foreWind + " MPH";
-                humidityEl.textContent = "HUMIDITY: " + foreHumidity +"%";
+                humidityEl.textContent = "HUMIDITY: " + foreHumidity + "%";
+
+                var weatherPicture = "https://openweathermap.org/img/w/" + foreIcon + ".png";
+
+
+                var pic = document.createElement("img");
+                pic.setAttribute("alt", "weather icon"); pic.src = weatherPicture;
+                pic.setAttribute("height", "100");
+                pic.setAttribute("width", "100");
+                // document.getElementById("weather-icon").innerHTML = "";
+                // document.getElementById("weather-icon").appendChild(pic);
 
 
                 cardEl.appendChild(titleEl);
+                cardEl.appendChild(pic);
+
+
                 cardEl.appendChild(tempEl);
                 cardEl.appendChild(windEl);
                 foreList.appendChild(cardEl);
@@ -204,4 +230,4 @@ var getFiveDay = function (latitude, longitude) {
 // };
 
 submitEl.addEventListener("submit", formSubmitHandler);
-// cityLink.addEventListener("click", buttonClickHandler);
+cityList.addEventListener("click", buttonClickHandler);
