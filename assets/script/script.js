@@ -142,7 +142,7 @@ var getFiveDay = function (latitude, longitude) {
     fetch(fiveDayURL).then(function (response) {
         response.json().then(function (fiveDayData) {
             console.log(fiveDayData);
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 var foreDay = dayjs().add([i], "day").format("M/D/YYYY");
                 // for (let iconIndex = 0; iconIndex < 5; iconIndex++) {
                 //     var foreIcon = fiveDayData.list[i].weather[iconIndex].icon; 
@@ -155,9 +155,11 @@ var getFiveDay = function (latitude, longitude) {
 
                 // fiveDayDay.textContent = foreDay;
 
-                fiveDay.setAttribute("class", "col-12 col-xl");
+                var foreList = document.createElement("div");
+                foreList.setAttribute("class", "col-12 col-xl");
+                document.getElementById("five-day").textContent = foreDay;
 
-                fiveDay.append(foreDay);
+                // fiveDay.append(foreDay);
 
             }
         })
