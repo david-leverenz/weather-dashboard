@@ -11,6 +11,7 @@ var weatherPicture = document.querySelector("#weather-icon");
 var forePicture = document.querySelector("#fore-icon")
 var cityList = document.querySelector("#cities");
 var cardContainer = document.querySelector("#card-container");
+var searchedCities = document.querySelector("#searched-cities");
 
 // Get the current day and format it the way I want.
 
@@ -37,6 +38,8 @@ var formSubmitHandler = function (event) {
 
         getLatLonCity(cityName);
         document.getElementById("cities").innerHTML = "";
+
+        searchedCities.setAttribute("class", "border-top border-secondary border-3 m-3 p-2 searched-cities text-center");
 
         for (let i = 0; i < citiesInStorage.length; i++) {
             var cityButton = document.createElement("button");
