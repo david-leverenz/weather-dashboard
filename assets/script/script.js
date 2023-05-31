@@ -166,8 +166,8 @@ var getFiveDay = function (latitude, longitude) {
                 var pic = document.createElement("img");
                 pic.setAttribute("alt", "weather icon");
                 pic.src = weatherPicture;
-                pic.setAttribute("height", "100");
-                pic.setAttribute("width", "100");
+                pic.setAttribute("height", "50");
+                pic.setAttribute("width", "50");
 
                 cardEl.appendChild(titleEl);
                 cardEl.appendChild(pic);
