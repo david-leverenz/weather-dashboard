@@ -9,6 +9,15 @@ When you click on a city in the search history you are presented with current an
 The search history is only updated when a new city is searched (it will not keep adding the same city to the history list).<br>
 Behind the scenes the page is calling an open weather api (cited below), getting the latitude and longitude for the city name entered, and then executing another api call to get the weather.<br>
 
+## Links
+https://github.com/david-leverenz/weather-dashboard <br>
+https://david-leverenz.github.io/weather-dashboard/
+
+
+## Screenshot
+![image](https://github.com/david-leverenz/weather-dashboard/assets/131185593/aed4ebc7-7bd8-4762-a414-75046ed6dea8)
+
+
 ## Getting Started
 N/A<br>
 ### Dependencies
